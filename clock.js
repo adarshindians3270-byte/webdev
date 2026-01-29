@@ -18,8 +18,8 @@ let co = document.getElementById("pop");
 document.getElementById("con").addEventListener("click", function() {
   co.innerHTML = `<p class="pop">
     Contact:
-    <a class="link" href="https://instagram.com" target="blank">Instagram</a>
-    <a class="link" href="https://github.com" target="blank">GitHub</a>
+    <a class="link" href="https://www.instagram.com/adarsh_mishra_032?igsh=MmZpczhvcTZhZjdv" target="blank">Instagram</a>
+    <a class="link" href="https://github.com/adarshindians3270-byte" target="blank">GitHub</a>
   </p>`;
 })
 
