@@ -1,0 +1,368 @@
+/* ===================== RESET & BASE ===================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===================== BG ORBS ===================== */
+body::before {
+  content: '';
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.35) 0%, transparent 70%);
+  border-radius: 50%;
+  top: -150px;
+  right: -100px;
+  animation: floatA 9s ease-in-out infinite;
+  filter: blur(10px);
+}
+
+body::after {
+  content: '';
+  position: absolute;
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  bottom: -120px;
+  left: -80px;
+  animation: floatB 11s ease-in-out infinite reverse;
+  filter: blur(12px);
+}
+
+/* Extra orb via a pseudo on .all's container trick — using a wrapper span approach not possible, so we use a fixed element */
+.orb-extra {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, transparent 70%);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(14px);
+  animation: floatC 7s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes floatA {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%       { transform: translate(-30px, 40px) scale(1.08); }
+}
+
+@keyframes floatB {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%       { transform: translate(35px, -25px) scale(1.06); }
+}
+
+@keyframes floatC {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50%       { transform: translate(-48%, -52%) scale(1.15); }
+}
+
+/* ===================== CALCULATOR GLASS CARD ===================== */
+.all {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 32px;
+  padding: 28px;
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  width: 100%;
+  max-width: 380px;
+  position: relative;
+  z-index: 1;
+  animation: cardIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(40px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+/* ===================== DISPLAY INPUT ===================== */
+#in {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  padding: 22px 20px;
+  font-size: 2.4em;
+  color: #fff;
+  text-align: right;
+  margin-bottom: 22px;
+  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.3);
+  font-weight: 300;
+  letter-spacing: 1.5px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#in:focus {
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.3), 0 0 16px rgba(255, 255, 255, 0.08);
+}
+
+/* ===================== BUTTON GRID ===================== */
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+/* ===================== BASE BUTTON (NUMBER KEYS) ===================== */
+input[type="button"] {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  padding: 19px 4px;
+  font-size: 1.45em;
+  color: #e2e8f0;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  font-weight: 500;
+  transition:
+    background 0.25s ease,
+    transform 0.15s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+  box-shadow:
+    0 3px 12px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ripple layer */
+input[type="button"]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.45) 0%, transparent 70%);
+  border-radius: inherit;
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity 0s, transform 0s;
+  pointer-events: none;
+}
+
+/* ── NUMBER HOVER ── */
+input[type="button"]:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.32);
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 0 14px rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+/* ── NUMBER ACTIVE / CLICK ── */
+input[type="button"]:active {
+  transform: translateY(1px);
+  box-shadow:
+    0 1px 6px rgba(0, 0, 0, 0.3),
+    inset 0 2px 6px rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0.22);
+}
+
+input[type="button"]:active::after {
+  opacity: 1;
+  transform: scale(1.4);
+  transition: opacity 0s, transform 0.5s cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* ===================== OPERATOR BUTTONS  (+  -  /  *  %  ^  π) ===================== */
+.operator {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.28), rgba(139, 92, 246, 0.22)) !important;
+  border-color: rgba(139, 92, 246, 0.4) !important;
+  color: #c4b5fd !important;
+  font-weight: 600;
+  text-shadow: 0 1px 6px rgba(139, 92, 246, 0.4);
+}
+
+.operator:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.42), rgba(139, 92, 246, 0.35)) !important;
+  border-color: rgba(167, 139, 250, 0.6) !important;
+  color: #fff !important;
+  box-shadow:
+    0 6px 22px rgba(99, 102, 241, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 0 18px rgba(139, 92, 246, 0.3) !important;
+}
+
+.operator:active {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.5), rgba(139, 92, 246, 0.4)) !important;
+}
+
+/* ===================== BRACKETS  (  ) ===================== */
+#openbracket,
+#closebracket {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.22), rgba(52, 211, 153, 0.16)) !important;
+  border-color: rgba(52, 211, 153, 0.38) !important;
+  color: #6ee7b7 !important;
+  font-weight: 600;
+  font-size: 1.55em;
+  text-shadow: 0 1px 6px rgba(52, 211, 153, 0.35);
+}
+
+#openbracket:hover,
+#closebracket:hover {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.38), rgba(52, 211, 153, 0.28)) !important;
+  border-color: rgba(52, 211, 153, 0.6) !important;
+  color: #fff !important;
+  box-shadow:
+    0 6px 22px rgba(16, 185, 129, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 0 18px rgba(52, 211, 153, 0.28) !important;
+}
+
+#openbracket:active,
+#closebracket:active {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.45), rgba(52, 211, 153, 0.35)) !important;
+}
+
+/* ===================== BACK  (X) ===================== */
+#back {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.28), rgba(251, 191, 36, 0.2)) !important;
+  border-color: rgba(251, 191, 36, 0.4) !important;
+  color: #fcd34d !important;
+  font-weight: 700;
+  text-shadow: 0 1px 6px rgba(251, 191, 36, 0.4);
+}
+
+#back:hover {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.42), rgba(251, 191, 36, 0.34)) !important;
+  border-color: rgba(251, 191, 36, 0.6) !important;
+  color: #fff !important;
+  box-shadow:
+    0 6px 22px rgba(245, 158, 11, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 0 18px rgba(251, 191, 36, 0.3) !important;
+}
+
+#back:active {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.5), rgba(251, 191, 36, 0.4)) !important;
+}
+
+/* ===================== CLEAR  (C) ===================== */
+#clear {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(248, 113, 113, 0.22)) !important;
+  border-color: rgba(248, 113, 113, 0.42) !important;
+  color: #fca5a5 !important;
+  font-weight: 700;
+  text-shadow: 0 1px 6px rgba(248, 113, 113, 0.4);
+}
+
+#clear:hover {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.45), rgba(248, 113, 113, 0.36)) !important;
+  border-color: rgba(248, 113, 113, 0.6) !important;
+  color: #fff !important;
+  box-shadow:
+    0 6px 22px rgba(239, 68, 68, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 0 18px rgba(248, 113, 113, 0.3) !important;
+}
+
+#clear:active {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.55), rgba(248, 113, 113, 0.45)) !important;
+}
+
+/* ===================== EQUAL  (=) ===================== */
+#equal {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.35), rgba(6, 182, 212, 0.28));
+  border-color: rgba(56, 189, 248, 0.45);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.55em;
+  grid-column: span 2;
+  text-shadow: 0 2px 8px rgba(6, 182, 212, 0.4);
+  box-shadow:
+    0 4px 18px rgba(6, 182, 212, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  letter-spacing: 2px;
+}
+
+#equal:hover {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.5), rgba(6, 182, 212, 0.42));
+  border-color: rgba(56, 189, 248, 0.65);
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 28px rgba(6, 182, 212, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 0 22px rgba(6, 182, 212, 0.35);
+}
+
+#equal:active {
+  transform: translateY(1px);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.58), rgba(6, 182, 212, 0.5));
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* ===================== DOT BUTTON ===================== */
+#dot {
+  color: #94a3b8;
+  font-size: 1.7em;
+  font-weight: 700;
+  line-height: 1;
+}
+
+#dot:hover {
+  color: #fff;
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 440px) {
+  .all {
+    padding: 20px;
+    border-radius: 26px;
+  }
+
+  #in {
+    font-size: 1.9em;
+    padding: 18px 16px;
+    border-radius: 16px;
+    margin-bottom: 18px;
+  }
+
+  .buttons {
+    gap: 8px;
+  }
+
+  input[type="button"] {
+    padding: 16px 4px;
+    font-size: 1.25em;
+    border-radius: 13px;
+  }
+
+  #equal {
+    font-size: 1.35em;
+  }
+}
