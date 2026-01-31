@@ -86,7 +86,7 @@ document.getElementById('equal').addEventListener("click", () => {
     disp.value = disp.value.replaceAll("π", Math.PI);
     disp.value = eval(disp.value);
   } catch (e) {
-    disp.value = "----.ERROR.----";
+    disp.value = "SYNTAX ERROR";
   }
 })
 document.getElementById('^').addEventListener("click", () => {
