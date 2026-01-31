@@ -1,5 +1,5 @@
 ### 🧮 Calculator
-Click here to see my **Calculator** project live: [Calculator](https://adarshindians3270-byte.github.io/webdev/calc.html)
+Click here to see my **Calculator** project live: [Calculator](https://adarshindians3270-byte.github.io/webdev/calculator/calc.html)
 
 A button-based calculator built using **HTML and Vanilla JavaScript**, focused on **expression logic and DOM handling**.
 
